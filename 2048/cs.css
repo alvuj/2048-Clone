@@ -1,0 +1,26 @@
+body {
+    background-color: #faf8ef; /* Boja pozadine slična igri 2048 */
+}
+
+.container {
+    text-align: center;
+}
+
+h1 {
+    color: #776e65; /* Boja naslova slična igri 2048 */
+}
+
+.btn-play {
+    background-color: #ece0ca; /* Boja za "Play" button */
+    color: white;
+}
+
+.btn-table {
+    background-color: #f4b17a; /* Boja za "Tablica" button */
+    color: white;
+}
+
+.btn-instructions {
+    background-color: #8f7a66; /* Boja za "Uputstvo" button */
+    color: white;
+}
