@@ -28,7 +28,7 @@ if (isset($_POST['highscore'])) {
     $stmt = $conn->prepare("INSERT INTO `tbl-user` (high_score) VALUES ($highScore)");
     $stmt->bind_param("i", $highScore); 
     $res = $stmt->execute();
-    echo"kurcina";
+    echo"Nemere";
     if ($res) {
         echo "High score successfully saved.";
     } else {

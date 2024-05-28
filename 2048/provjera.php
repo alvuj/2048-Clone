@@ -1,4 +1,12 @@
-<?php  
+ <?php  
+
+
+
+
+
+
+ 
+session_start();
 
 $conn = mysqli_connect('localhost', 'root', '', '2048') or die(mysqli_connect_error()); 
 
@@ -7,36 +15,57 @@ $result = $conn->query($sql);
 
 $existingNames = array();
 if ($result->num_rows > 0) {
-  // Dodavanje svakog user_name u niz
   while($row = $result->fetch_assoc()) {
     $existingNames[] = $row["user_name"];
-    
   }
 } else {
   echo "0 results";
 }
 
-
-
 if(isset($_POST['suggestion'])){
     $name = $_POST['suggestion'];
-}
-if(!empty($name)){
-    foreach($existingNames as $existingName){
-        
-        if(strpos($existingName, $name) !== false){
-            echo $existingName;
-            echo "<br>";
+    if(!empty($name)){
+        foreach($existingNames as $existingName){
+            if(strpos($existingName, $name) !== false){
+                echo $existingName;
+                echo "<br>";
+            }
         }
-
+    }
 }
 
+if(isset($_POST['highscore'])){
+    $submittedHighScore = $_POST['highscore'];
+    $userName = $_SESSION['user_name']; 
 
-
+    $sql_get_score = "SELECT high_score FROM tbl_high_score WHERE user_name = '$userName'";
+    $result = $conn->query($sql_get_score);
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        if ($submittedHighScore > $row['high_score']) {
+            // Ažuriranje high score-a ako je novi veći
+            $sql_update_score = "UPDATE tbl_high_score SET high_score = '$submittedHighScore' WHERE user_name = '$userName'";
+            if ($conn->query($sql_update_score)) {
+                echo "Novi high score je zapisan.";
+            } else {
+                echo "Greška pri ažuriranju high score-a.";
+            }
+        }
+    } else {
+        $sql_insert_score = "INSERT INTO tbl_high_score (user_name, high_score) VALUES ('$userName', '$submittedHighScore')";
+        if ($conn->query($sql_insert_score)) {
+            echo "High score je dodan.";
+        } else {
+            echo "Greška pri dodavanju high score-a.";
+        }
+    }
 }
-
-
 ?>
+
+
+
+
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
 
@@ -45,7 +74,6 @@ if(!empty($name)){
  
 $conn = mysqli_connect('localhost', 'root', '', '2048') or die(mysqli_connect_error()); 
 
-// Izmenjeni SQL upit da uključi i korisničko ime
 $sql = "SELECT user_name, high_score FROM tbl_user";
 $result = $conn->query($sql);
 

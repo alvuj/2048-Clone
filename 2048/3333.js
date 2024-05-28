@@ -112,9 +112,9 @@ function slide(row) {
    
     row = filterZero(row); 
 
-    //slide 
+    //slajd
     for ( let i = 0; i < row.length-1; i++){
-        //check every 2
+        //provjeri svaka 2
         if(row[i] == row[i+1]){
             row[i] *= 2;
             row[i+1] = 0;

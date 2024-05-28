@@ -9,6 +9,15 @@ body, html {
     background-color: #faf8ef;
 }
 
+.message {
+    color: red;
+    background-color: #f9f9f9;
+    padding: 10px;
+    margin: 20px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
 .wrapper {
     text-align: center;
 }

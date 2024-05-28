@@ -1,6 +1,6 @@
 <?php include('provjera.php') ?>
 <?php
-session_start();
+//session_start();
 
 
 ?>
@@ -18,12 +18,13 @@ session_start();
 </head>
 
 <body>
+    
     <h1>2048</h1>
     <hr> <!--horizontalna linija    -->
     <h2>Score: <span id="score">0</span></h2>
 
     <h3></h3>
-    <h2>Username: <span id="username"><?php echo "{$_SESSION['us']}"; ?></span></h2>
+    <!-- <h2>Username: <span id="username"><?php echo "{$_SESSION['us']}"; ?></span></h2> -->
     <h2><?php include 'get.php' ?></h2>
 
 
@@ -60,53 +61,31 @@ session_start();
         }
     }, false);
 
-    //šalje trenutačni high score i username kojeg ocita sa html-a 
-    
 
-    $(document).ready(function() {
-        var scoreObserver = new MutationObserver(function(mutations) {
-            mutations.forEach(function(mutation) {
-                if (mutation.type == 'childList') {
-                    var newScore = $('#score').text(); 
-                    var username = $('#username').text(); 
-                    $.post("update_high_score.php", {
-                        highscore: newScore,
-                        username: username 
-                    }, function(data, status) {
-                        $("#hs").html(data);
-                    });
-                }
-            });
+
+$(document).ready(function() {
+    var scoreObserver = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.type == 'childList') {
+                var newScore = $('#score').text(); 
+                var username = $('#username').text(); 
+
+                $.post("provjera.php", {
+                    highscore: newScore,
+                    username: username 
+                }, function(data, status) {
+                    $("#hs").html(data);
+                });
+            }
         });
-
-        var config = {
-            childList: true
-        };
-
-        scoreObserver.observe(document.getElementById('score'), config);
     });
 
+    var config = {
+        childList: true
+    };
 
-    //salje high score
-    $(document).ready(function() {
-        var scoreObserver = new MutationObserver(function(mutations) {
-            mutations.forEach(function(mutation) {
-                if (mutation.type == 'childList') {
-                    var newScore = $('#score').text();
-                    $.post("provjera.php", {
-                        highscore: newScore
-                    }, function(data, status) {
-                        $("#hs").html(data);
-                    });
-                }
-            });
-        });
+    scoreObserver.observe(document.getElementById('score'), config);
+});
 
-        var config = {
-            childList: true
-        };
 
-        scoreObserver.observe(document.getElementById('score'), config);
-
-    });
 </script>
